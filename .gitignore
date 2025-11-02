@@ -1,4 +1,31 @@
-# Python
+# ===========================================
+# AI交易机器人 Git忽略文件
+# ===========================================
+
+# 🔐 敏感配置文件
+.env
+.env.local
+.env.production
+*.key
+*.pem
+config.json
+secrets.json
+
+# 🗄️ 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+dashboard.db
+production_dashboard.db
+
+# 📝 日志文件
+*.log
+logs/
+production_trading_bot.log
+debug.log
+error.log
+
+# 🐍 Python相关
 __pycache__/
 *.py[cod]
 *$py.class
@@ -16,27 +43,39 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
-# Virtual Environment
-.venv/
+# 🌐 虚拟环境
 venv/
 env/
 ENV/
+.venv/
+.env.backup
 
-# IDE
+# 💻 IDE相关
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.project
+.pydevproject
+.settings/
 
-# OS
+# 📊 临时文件和缓存
+*.tmp
+*.temp
+*.cache
+.cache/
+*.bak
+*.backup
+temp/
+tmp/
+
+# 📱 操作系统相关
 .DS_Store
 .DS_Store?
 ._*
@@ -45,60 +84,42 @@ ENV/
 ehthumbs.db
 Thumbs.db
 
-# Logs
-*.log
-logs/
-production_trading_bot.log
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-dashboard.db
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Temporary files
-*.tmp
-*.temp
-*.bak
-*.backup
-
-# Node modules (if any)
-node_modules/
-
-# Coverage reports
-htmlcov/
+# 🔧 开发工具
 .coverage
-.coverage.*
+.pytest_cache/
+.tox/
+.nox/
+htmlcov/
 coverage.xml
 *.cover
 .hypothesis/
-.pytest_cache/
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# 📦 包管理器
+pip-log.txt
+pip-delete-this-directory.txt
+node_modules/
+package-lock.json
+yarn.lock
 
-# pyenv
-.python-version
+# 🎯 项目特定
+trading_data/
+backups/
+export/
+reports/
+*.csv
+*.xlsx
+*.json.bak
 
-# Environments
-.env
-.venv
+# 🔍 测试和调试
+test_*.py
+debug_*.py
+temp_*.py
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# Project specific
-config.json
-*.pem
-*.key
-secrets/
+# ===========================================
+# 重要提醒
+# ===========================================
+# 1. 确保 .env 文件在 .gitignore 中
+# 2. 提交前检查是否有敏感信息泄露
+# 3. 使用 .env.example 作为配置模板
+# 4. 定期检查 Git 历史中的敏感信息
+# ===========================================
