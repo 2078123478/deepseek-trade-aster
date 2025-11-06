@@ -341,6 +341,30 @@
             font-size: 20px;
             font-weight: 600;
         }
+        
+        /* 图表加载动画 */
+        .chart-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .chart-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
         .refresh-btn {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
             color: var(--bg-primary);
@@ -553,6 +577,251 @@
             background: var(--primary-color);
             color: var(--bg-primary);
         }
+
+        /* 性能指标概览 */
+        .performance-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .perf-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .perf-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+        
+        .perf-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-color);
+        }
+        
+        .perf-card:hover::before {
+            opacity: 1;
+        }
+        
+        .perf-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .perf-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .perf-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .perf-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+            line-height: 1.2;
+        }
+        
+        .perf-change {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+        }
+        
+        .perf-change.positive {
+            background: var(--success-light);
+            color: var(--success-color);
+        }
+        
+        .perf-change.negative {
+            background: var(--danger-light);
+            color: var(--danger-color);
+        }
+
+        /* 图表标签页 */
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+        
+        .chart-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            background: var(--bg-tertiary);
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+        }
+        
+        .chart-tab {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-family: var(--font-family);
+        }
+        
+        .chart-tab:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .chart-tab.active {
+            background: var(--bg-primary);
+            color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .chart-tab svg {
+            transition: transform var(--transition-fast);
+        }
+        
+        .chart-tab:hover svg {
+            transform: scale(1.1);
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+        }
+        
+        .chart-select {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-family: var(--font-family);
+            outline: none;
+        }
+        
+        .chart-select:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .chart-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.1);
+        }
+        
+        .chart-view {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .chart-view.active {
+            display: block;
+        }
+
+        /* 响应式优化 */
+        @media (max-width: 1200px) {
+            .performance-summary {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+            
+            .perf-value {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .performance-summary {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--spacing-md);
+            }
+            
+            .perf-card {
+                padding: var(--spacing-lg);
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .perf-icon {
+                width: 48px;
+                height: 48px;
+            }
+            
+            .perf-value {
+                font-size: 22px;
+            }
+            
+            .chart-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .chart-tabs {
+                flex-direction: column;
+            }
+            
+            .chart-tab {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .performance-summary {
+                grid-template-columns: 1fr;
+            }
+            
+            .perf-card {
+                flex-direction: row;
+                text-align: left;
+            }
+        }
     </style>
 </head>
 <body>
@@ -574,10 +843,104 @@
             </div>
         </div>
 
-        <!-- 净值图表 - 移动到顶部 -->
+        <!-- 性能指标概览卡片 -->
+        <div class="performance-summary">
+            <div class="perf-card">
+                <div class="perf-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                        <polyline points="17 6 23 6 23 12"></polyline>
+                    </svg>
+                </div>
+                <div class="perf-content">
+                    <div class="perf-label">总收益率</div>
+                    <div class="perf-value" id="total-return">--</div>
+                    <div class="perf-change positive" id="return-change">--</div>
+                </div>
+            </div>
+            
+            <div class="perf-card">
+                <div class="perf-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+                <div class="perf-content">
+                    <div class="perf-label">胜率</div>
+                    <div class="perf-value" id="win-rate">--</div>
+                    <div class="perf-change" id="win-rate-change">--</div>
+                </div>
+            </div>
+            
+            <div class="perf-card">
+                <div class="perf-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <line x1="12" y1="2" x2="12" y2="22"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                </div>
+                <div class="perf-content">
+                    <div class="perf-label">盈亏比</div>
+                    <div class="perf-value" id="profit-factor">--</div>
+                    <div class="perf-change" id="pf-change">--</div>
+                </div>
+            </div>
+            
+            <div class="perf-card">
+                <div class="perf-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                        <polyline points="17 18 23 18 23 12"></polyline>
+                    </svg>
+                </div>
+                <div class="perf-content">
+                    <div class="perf-label">最大回撤</div>
+                    <div class="perf-value" id="max-drawdown">--</div>
+                    <div class="perf-change" id="dd-change">--</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表容器 - 带标签页切换 -->
         <div class="chart-container">
-            <h3>资产净值 (24H)</h3>
-            <div id="equity-chart"></div>
+            <div class="chart-header">
+                <div class="chart-tabs">
+                    <button class="chart-tab active" onclick="switchChart('equity')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="2" x2="12" y2="22"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        资产净值
+                    </button>
+                    <button class="chart-tab" onclick="switchChart('pnl')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                        </svg>
+                        盈亏分析
+                    </button>
+                    <button class="chart-tab" onclick="switchChart('drawdown')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                        </svg>
+                        回撤分析
+                    </button>
+                </div>
+                <div class="chart-controls">
+                    <select id="timeframe-selector" class="chart-select" onchange="changeTimeframe(this.value)">
+                        <option value="6">6小时</option>
+                        <option value="24" selected>24小时</option>
+                        <option value="168">7天</option>
+                        <option value="720">30天</option>
+                    </select>
+                </div>
+            </div>
+            <div id="equity-chart" class="chart-view active"></div>
+            <div id="pnl-chart" class="chart-view"></div>
+            <div id="drawdown-chart" class="chart-view"></div>
         </div>
 
         <div class="dashboard-grid">
@@ -961,7 +1324,7 @@
             Promise.all([
                 loadCurrentPosition(),
                 loadAccountInfo(),
-                loadEquityChart(),
+                loadEquityChart(currentTimeframe),
                 loadRecentTrades()
             ]).then(() => {
                 updateLastUpdateTime();
@@ -1042,43 +1405,435 @@
         }
 
 
+        // 全局变量存储图表数据
+        let chartData = null;
+        let currentTimeframe = 24;
+
         // 加载净值图表
-        function loadEquityChart() {
-            return $.get('/api/equity_chart', function(data) {
-                const trace1 = {
-                    x: data.timestamps,
-                    y: data.equity,
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: '净值',
-                    line: {color: '#667eea'}
-                };
-
-                const trace2 = {
-                    x: data.timestamps,
-                    y: data.pnl,
-                    type: 'scatter',
-                    mode: 'lines',
-                    name: '盈亏',
-                    yaxis: 'y2',
-                    line: {color: '#28a745'}
-                };
-
-                const layout = {
-                    title: '',
-                    xaxis: {title: '时间'},
-                    yaxis: {title: '净值 ($)'},
-                    yaxis2: {
-                        title: '盈亏 ($)',
-                        overlaying: 'y',
-                        side: 'right'
-                    },
-                    margin: {t: 20, r: 40, b: 40, l: 60},
-                    height: 400
-                };
-
-                Plotly.newPlot('equity-chart', [trace1, trace2], layout);
+        function loadEquityChart(hours = 24) {
+            return $.get('/api/equity_chart', { hours: hours }, function(data) {
+                chartData = data;
+                renderEquityChart();
+                renderPnLChart();
+                renderDrawdownChart();
+                updatePerformanceMetrics(data);
             });
+        }
+
+        // 渲染净值图表 - 优化版
+        function renderEquityChart() {
+            const chartContainer = $('#equity-chart');
+            
+            if (!chartData || !chartData.equity || chartData.equity.length === 0) {
+                chartContainer.html('<p style="text-align: center; color: #666; padding: 40px;">暂无数据</p>');
+                return;
+            }
+            
+            // 显示加载动画
+            chartContainer.html('<div class="chart-loading"><div class="chart-loading-spinner"></div><p>加载中...</p></div>');
+
+            const trace1 = {
+                x: chartData.timestamps,
+                y: chartData.equity,
+                type: 'scatter',
+                mode: 'lines',
+                name: '账户净值',
+                line: {
+                    color: '#3b82f6',
+                    width: 3,
+                    shape: 'spline'
+                },
+                fill: 'tonexty',
+                fillcolor: 'rgba(59, 130, 246, 0.1)',
+                hovertemplate: '<b>净值</b>: $%{y:.2f}<br><b>时间</b>: %{x}<extra></extra>'
+            };
+
+            const trace2 = {
+                x: chartData.timestamps,
+                y: chartData.pnl,
+                type: 'scatter',
+                mode: 'lines',
+                name: '累计盈亏',
+                yaxis: 'y2',
+                line: {
+                    color: chartData.pnl[chartData.pnl.length - 1] >= 0 ? '#10b981' : '#ef4444',
+                    width: 2,
+                    shape: 'spline'
+                },
+                hovertemplate: '<b>盈亏</b>: $%{y:.2f}<br><b>时间</b>: %{x}<extra></extra>'
+            };
+
+            const layout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: {
+                    family: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+                    size: 12,
+                    color: '#495057'
+                },
+                xaxis: {
+                    title: '',
+                    showgrid: true,
+                    gridcolor: '#f1f3f4',
+                    zeroline: false,
+                    showline: true,
+                    linecolor: '#dee2e6'
+                },
+                yaxis: {
+                    title: {
+                        text: '账户净值 ($)',
+                        font: {
+                            size: 13,
+                            color: '#3b82f6',
+                            weight: 600
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: '#f1f3f4',
+                    zeroline: false,
+                    showline: true,
+                    linecolor: '#dee2e6',
+                    tickformat: '$.2f'
+                },
+                yaxis2: {
+                    title: {
+                        text: '累计盈亏 ($)',
+                        font: {
+                            size: 13,
+                            color: chartData.pnl[chartData.pnl.length - 1] >= 0 ? '#10b981' : '#ef4444',
+                            weight: 600
+                        }
+                    },
+                    overlaying: 'y',
+                    side: 'right',
+                    showgrid: false,
+                    zeroline: true,
+                    zerolinecolor: '#dee2e6',
+                    zerolinewidth: 2,
+                    showline: true,
+                    linecolor: '#dee2e6',
+                    tickformat: '$.2f'
+                },
+                margin: { t: 20, r: 60, b: 40, l: 60 },
+                height: 450,
+                hovermode: 'x unified',
+                hoverlabel: {
+                    bgcolor: 'rgba(255, 255, 255, 0.95)',
+                    bordercolor: '#dee2e6',
+                    font: {
+                        family: 'Inter, sans-serif',
+                        size: 13
+                    }
+                },
+                legend: {
+                    orientation: 'h',
+                    yanchor: 'bottom',
+                    y: 1.02,
+                    xanchor: 'right',
+                    x: 1,
+                    bgcolor: 'rgba(255, 255, 255, 0.8)',
+                    bordercolor: '#dee2e6',
+                    borderwidth: 1
+                },
+                showlegend: true
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['select2d', 'lasso2d', 'autoScale2d'],
+                toImageButtonOptions: {
+                    format: 'png',
+                    filename: 'equity_chart',
+                    height: 600,
+                    width: 1200,
+                    scale: 2
+                }
+            };
+
+            Plotly.newPlot('equity-chart', [trace1, trace2], layout, config);
+        }
+
+        // 渲染盈亏分析图表
+        function renderPnLChart() {
+            const chartContainer = $('#pnl-chart');
+            
+            if (!chartData || !chartData.pnl || chartData.pnl.length === 0) {
+                chartContainer.html('<p style="text-align: center; color: #666; padding: 40px;">暂无数据</p>');
+                return;
+            }
+            
+            // 显示加载动画
+            chartContainer.html('<div class="chart-loading"><div class="chart-loading-spinner"></div><p>加载中...</p></div>');
+
+            // 计算每段的盈亏变化
+            const pnlChanges = [];
+            const colors = [];
+            const timestamps = [];
+            
+            for (let i = 1; i < chartData.pnl.length; i++) {
+                const change = chartData.pnl[i] - chartData.pnl[i-1];
+                pnlChanges.push(change);
+                colors.push(change >= 0 ? '#10b981' : '#ef4444');
+                timestamps.push(chartData.timestamps[i]);
+            }
+
+            const trace = {
+                x: timestamps,
+                y: pnlChanges,
+                type: 'bar',
+                name: '区间盈亏',
+                marker: {
+                    color: colors,
+                    line: {
+                        width: 0
+                    }
+                },
+                hovertemplate: '<b>盈亏</b>: $%{y:.2f}<br><b>时间</b>: %{x}<extra></extra>'
+            };
+
+            const layout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: {
+                    family: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+                    size: 12,
+                    color: '#495057'
+                },
+                xaxis: {
+                    title: '',
+                    showgrid: false,
+                    zeroline: false,
+                    showline: true,
+                    linecolor: '#dee2e6'
+                },
+                yaxis: {
+                    title: {
+                        text: '区间盈亏 ($)',
+                        font: {
+                            size: 13,
+                            weight: 600
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: '#f1f3f4',
+                    zeroline: true,
+                    zerolinecolor: '#dee2e6',
+                    zerolinewidth: 2,
+                    showline: true,
+                    linecolor: '#dee2e6',
+                    tickformat: '$.2f'
+                },
+                margin: { t: 20, r: 40, b: 40, l: 60 },
+                height: 450,
+                hovermode: 'closest',
+                hoverlabel: {
+                    bgcolor: 'rgba(255, 255, 255, 0.95)',
+                    bordercolor: '#dee2e6'
+                },
+                showlegend: false
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['select2d', 'lasso2d', 'autoScale2d'],
+                toImageButtonOptions: {
+                    format: 'png',
+                    filename: 'pnl_chart',
+                    height: 600,
+                    width: 1200,
+                    scale: 2
+                }
+            };
+
+            Plotly.newPlot('pnl-chart', [trace], layout, config);
+        }
+
+        // 渲染回撤分析图表
+        function renderDrawdownChart() {
+            const chartContainer = $('#drawdown-chart');
+            
+            if (!chartData || !chartData.equity || chartData.equity.length === 0) {
+                chartContainer.html('<p style="text-align: center; color: #666; padding: 40px;">暂无数据</p>');
+                return;
+            }
+            
+            // 显示加载动画
+            chartContainer.html('<div class="chart-loading"><div class="chart-loading-spinner"></div><p>加载中...</p></div>');
+
+            // 计算回撤
+            const drawdowns = [];
+            let peak = chartData.equity[0];
+            
+            for (let i = 0; i < chartData.equity.length; i++) {
+                if (chartData.equity[i] > peak) {
+                    peak = chartData.equity[i];
+                }
+                const drawdown = ((chartData.equity[i] - peak) / peak) * 100;
+                drawdowns.push(drawdown);
+            }
+
+            const trace = {
+                x: chartData.timestamps,
+                y: drawdowns,
+                type: 'scatter',
+                mode: 'lines',
+                name: '回撤比例',
+                line: {
+                    color: '#ef4444',
+                    width: 2,
+                    shape: 'spline'
+                },
+                fill: 'tozeroy',
+                fillcolor: 'rgba(239, 68, 68, 0.1)',
+                hovertemplate: '<b>回撤</b>: %{y:.2f}%<br><b>时间</b>: %{x}<extra></extra>'
+            };
+
+            const layout = {
+                paper_bgcolor: 'rgba(0,0,0,0)',
+                plot_bgcolor: 'rgba(0,0,0,0)',
+                font: {
+                    family: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+                    size: 12,
+                    color: '#495057'
+                },
+                xaxis: {
+                    title: '',
+                    showgrid: true,
+                    gridcolor: '#f1f3f4',
+                    zeroline: false,
+                    showline: true,
+                    linecolor: '#dee2e6'
+                },
+                yaxis: {
+                    title: {
+                        text: '回撤比例 (%)',
+                        font: {
+                            size: 13,
+                            color: '#ef4444',
+                            weight: 600
+                        }
+                    },
+                    showgrid: true,
+                    gridcolor: '#f1f3f4',
+                    zeroline: true,
+                    zerolinecolor: '#dee2e6',
+                    zerolinewidth: 2,
+                    showline: true,
+                    linecolor: '#dee2e6',
+                    ticksuffix: '%'
+                },
+                margin: { t: 20, r: 40, b: 40, l: 60 },
+                height: 450,
+                hovermode: 'x unified',
+                hoverlabel: {
+                    bgcolor: 'rgba(255, 255, 255, 0.95)',
+                    bordercolor: '#dee2e6'
+                },
+                showlegend: false
+            };
+
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                displaylogo: false,
+                modeBarButtonsToRemove: ['select2d', 'lasso2d', 'autoScale2d'],
+                toImageButtonOptions: {
+                    format: 'png',
+                    filename: 'drawdown_chart',
+                    height: 600,
+                    width: 1200,
+                    scale: 2
+                }
+            };
+
+            Plotly.newPlot('drawdown-chart', [trace], layout, config);
+        }
+
+        // 更新性能指标
+        function updatePerformanceMetrics(data) {
+            if (!data || !data.equity || data.equity.length === 0) {
+                return;
+            }
+
+            // 计算总收益率
+            const initialEquity = data.equity[0];
+            const currentEquity = data.equity[data.equity.length - 1];
+            const totalReturn = ((currentEquity - initialEquity) / initialEquity * 100).toFixed(2);
+            $('#total-return').text(totalReturn + '%');
+            $('#return-change').text(totalReturn >= 0 ? '↑ 盈利中' : '↓ 亏损中')
+                .removeClass('positive negative')
+                .addClass(totalReturn >= 0 ? 'positive' : 'negative');
+
+            // 通过交易数据计算胜率
+            $.get('/api/trading_actions', function(trades) {
+                if (trades && trades.length > 0) {
+                    const winTrades = trades.filter(t => t.pnl > 0).length;
+                    const totalTrades = trades.length;
+                    const winRate = totalTrades > 0 ? ((winTrades / totalTrades) * 100).toFixed(1) : 0;
+                    $('#win-rate').text(winRate + '%');
+                    $('#win-rate-change').text(`${winTrades}/${totalTrades} 胜`);
+
+                    // 计算盈亏比
+                    const winAmount = trades.filter(t => t.pnl > 0).reduce((sum, t) => sum + t.pnl, 0);
+                    const lossAmount = Math.abs(trades.filter(t => t.pnl < 0).reduce((sum, t) => sum + t.pnl, 0));
+                    const profitFactor = lossAmount > 0 ? (winAmount / lossAmount).toFixed(2) : winAmount > 0 ? '∞' : '0';
+                    $('#profit-factor').text(profitFactor);
+                    $('#pf-change').text(profitFactor > 1 ? '优秀' : profitFactor > 0.5 ? '良好' : '需改进')
+                        .removeClass('positive negative')
+                        .addClass(profitFactor > 1 ? 'positive' : 'negative');
+                }
+            });
+
+            // 计算最大回撤
+            let maxDrawdown = 0;
+            let peak = data.equity[0];
+            
+            for (let i = 0; i < data.equity.length; i++) {
+                if (data.equity[i] > peak) {
+                    peak = data.equity[i];
+                }
+                const drawdown = ((data.equity[i] - peak) / peak) * 100;
+                if (drawdown < maxDrawdown) {
+                    maxDrawdown = drawdown;
+                }
+            }
+            
+            $('#max-drawdown').text(maxDrawdown.toFixed(2) + '%');
+            $('#dd-change').text(maxDrawdown > -5 ? '风险低' : maxDrawdown > -15 ? '风险中' : '风险高')
+                .removeClass('positive negative')
+                .addClass(maxDrawdown > -10 ? 'positive' : 'negative');
+        }
+
+        // 切换图表
+        function switchChart(chartType) {
+            // 更新标签页状态
+            document.querySelectorAll('.chart-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.chart-tab').classList.add('active');
+
+            // 切换图表视图
+            document.querySelectorAll('.chart-view').forEach(view => {
+                view.classList.remove('active');
+            });
+
+            if (chartType === 'equity') {
+                document.getElementById('equity-chart').classList.add('active');
+            } else if (chartType === 'pnl') {
+                document.getElementById('pnl-chart').classList.add('active');
+            } else if (chartType === 'drawdown') {
+                document.getElementById('drawdown-chart').classList.add('active');
+            }
+        }
+
+        // 更改时间范围
+        function changeTimeframe(hours) {
+            currentTimeframe = parseInt(hours);
+            loadEquityChart(currentTimeframe);
         }
 
         // 加载最近交易记录（整合AI分析）

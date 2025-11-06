@@ -6,6 +6,12 @@ AI交易机器人 Dashboard
 用于可视化展示交易数据、持仓信息和分析结果
 """
 
+# 设置UTF-8编码（Windows兼容）
+import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
 # 启用eventlet异步支持 - 必须在其他导入之前
 import eventlet
 eventlet.monkey_patch()

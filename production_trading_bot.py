@@ -201,58 +201,104 @@ def get_safe_trading_status():
     
     return status
 
+# 导入智能数据源管理器
+try:
+    from intelligent_data_source import IntelligentDataSource
+    intelligent_data_manager = IntelligentDataSource()
+    USE_INTELLIGENT_SOURCE = True
+    print("✅ 智能数据源管理器已启用")
+except ImportError as e:
+    print(f"⚠️ 智能数据源管理器导入失败，使用传统方式: {e}")
+    intelligent_data_manager = None
+    USE_INTELLIGENT_SOURCE = False
+
 def get_btc_market_data():
-    """获取BTC市场数据 - 使用OKX作为数据源"""
-    try:
-        # 使用OKX作为数据源（仅数据获取，不交易）
-        okx_config = {
-            'options': {
-                'defaultType': 'swap',
-                'adjustForTimeDifference': True,
-            },
-            'timeout': 30000,
-            'rateLimit': 1000,
-            'enableRateLimit': True,
-            'verify': False,
-        }
-        
-        exchange = ccxt.okx(okx_config)
-        
-        # 获取K线数据
-        ohlcv = exchange.fetch_ohlcv('BTC/USDT', '15m', limit=96)
-        df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
-        df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
-        
-        # 计算技术指标
-        df = calculate_technical_indicators(df)
-        
-        current_data = df.iloc[-1]
-        previous_data = df.iloc[-2]
-        
-        return {
-            'price': float(current_data['close']),
-            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            'high': float(current_data['high']),
-            'low': float(current_data['low']),
-            'volume': float(current_data['volume']),
-            'price_change': float(((current_data['close'] - previous_data['close']) / previous_data['close']) * 100),
-            'technical_data': {
-                'sma_5': float(current_data.get('sma_5', 0)),
-                'sma_20': float(current_data.get('sma_20', 0)),
-                'sma_50': float(current_data.get('sma_50', 0)),
-                'rsi': float(current_data.get('rsi', 0)),
-                'macd': float(current_data.get('macd', 0)),
-                'macd_signal': float(current_data.get('macd_signal', 0)),
-                'bb_upper': float(current_data.get('bb_upper', 0)),
-                'bb_lower': float(current_data.get('bb_lower', 0)),
-            },
-            'kline_data': df[['timestamp', 'open', 'high', 'low', 'close', 'volume']].tail(5).to_dict('records'),
-            'data_source': 'okx'
-        }
-        
-    except Exception as e:
-        print(f"❌ 市场数据获取失败: {e}")
-        return None
+    """获取BTC市场数据 - 使用智能数据源选择器"""
+    global USE_INTELLIGENT_SOURCE, intelligent_data_manager
+    
+    # 优先使用智能数据源
+    if USE_INTELLIGENT_SOURCE and intelligent_data_manager:
+        try:
+            print("🤖 使用智能数据源选择器获取市场数据...")
+            data = intelligent_data_manager.get_btc_market_data()
+            if data:
+                return data
+            else:
+                print("⚠️ 智能数据源失败，尝试传统方式...")
+                USE_INTELLIGENT_SOURCE = False  # 标记为不可用，下次不再尝试
+        except Exception as e:
+            print(f"⚠️ 智能数据源异常: {e}，尝试传统方式...")
+            USE_INTELLIGENT_SOURCE = False
+    
+    # 传统方式（备用方案）
+    max_retries = 3
+    retry_delay = 2
+    
+    for attempt in range(max_retries):
+        try:
+            print(f"📡 尝试连接OKX API (第{attempt + 1}次)...")
+            
+            # 使用优化的OKX配置，适合国内云服务器
+            okx_config = {
+                'options': {
+                    'defaultType': 'swap',
+                    'adjustForTimeDifference': True,
+                },
+                'timeout': 30,  # 减少超时时间，从30000秒降到30秒
+                'rateLimit': 100,  # 降低频率限制，避免被封IP
+                'enableRateLimit': True,
+                'verify': True,  # 启用SSL验证，更安全
+                'headers': {  # 添加请求头，提高连接成功率
+                    'User-Agent': 'AI-Trading-Bot/1.0',
+                    'Content-Type': 'application/json',
+                },
+            }
+            
+            exchange = ccxt.okx(okx_config)
+            
+            # 获取K线数据
+            ohlcv = exchange.fetch_ohlcv('BTC/USDT', '15m', limit=96)
+            print(f"✅ OKX API连接成功！获取到{len(ohlcv)}条数据")
+            
+            df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+            df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+            
+            # 计算技术指标
+            df = calculate_technical_indicators(df)
+            
+            current_data = df.iloc[-1]
+            previous_data = df.iloc[-2]
+            
+            return {
+                'price': float(current_data['close']),
+                'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                'high': float(current_data['high']),
+                'low': float(current_data['low']),
+                'volume': float(current_data['volume']),
+                'price_change': float(((current_data['close'] - previous_data['close']) / previous_data['close']) * 100),
+                'technical_data': {
+                    'sma_5': float(current_data.get('sma_5', 0)),
+                    'sma_20': float(current_data.get('sma_20', 0)),
+                    'sma_50': float(current_data.get('sma_50', 0)),
+                    'rsi': float(current_data.get('rsi', 0)),
+                    'macd': float(current_data.get('macd', 0)),
+                    'macd_signal': float(current_data.get('macd_signal', 0)),
+                    'bb_upper': float(current_data.get('bb_upper', 0)),
+                    'bb_lower': float(current_data.get('bb_lower', 0)),
+                },
+                'kline_data': df[['timestamp', 'open', 'high', 'low', 'close', 'volume']].tail(5).to_dict('records'),
+                'data_source': 'okx'
+            }
+            
+        except Exception as e:
+            print(f"❌ 第{attempt + 1}次尝试失败: {e}")
+            if attempt < max_retries - 1:
+                print(f"⏳ {retry_delay}秒后重试...")
+                time.sleep(retry_delay)
+                continue
+            else:
+                print(f"❌ 所有尝试都失败，无法获取市场数据")
+                return None
 
 def calculate_technical_indicators(df):
     """计算技术指标"""
